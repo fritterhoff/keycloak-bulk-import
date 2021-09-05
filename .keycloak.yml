@@ -1,0 +1,9 @@
+keycloak:
+  host:
+  user:
+  password:
+  realm:
+students:
+  - firstname:
+    lastname:
+    email:
