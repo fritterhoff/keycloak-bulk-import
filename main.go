@@ -4,6 +4,7 @@ import (
 	"context"
 	"fmt"
 	"os"
+	"strings"
 	"time"
 
 	"github.com/Nerzal/gocloak/v8"
@@ -40,17 +41,18 @@ func main() {
 
 		//students := viper.Get("students")
 		for _, student := range students.([]interface{}) {
-
-			fmt.Println(student)
 			firstname := student.(map[interface{}]interface{})["firstname"].(string)
 			lastname := student.(map[interface{}]interface{})["lastname"].(string)
-			username := fmt.Sprintf("%c%s", firstname[1], lastname)
+			username := fmt.Sprintf("%c%s", firstname[0], lastname)
+			// user name to lower case
+			username = strings.ToLower(username)
 			user := gocloak.User{
-				FirstName: gocloak.StringP(firstname),
-				LastName:  gocloak.StringP(lastname),
-				Email:     gocloak.StringP(student.(map[interface{}]interface{})["email"].(string)),
-				Username:  gocloak.StringP(username),
-				Enabled:   gocloak.BoolP(true),
+				FirstName:     gocloak.StringP(firstname),
+				LastName:      gocloak.StringP(lastname),
+				Email:         gocloak.StringP(student.(map[interface{}]interface{})["email"].(string)),
+				Username:      gocloak.StringP(username),
+				Enabled:       gocloak.BoolP(true),
+				EmailVerified: gocloak.BoolP(true),
 			}
 			log.Info().Msgf("Creating user '%s'.", username)
 			id, err := client.CreateUser(ctx, token.AccessToken, realm, user)
@@ -59,7 +61,7 @@ func main() {
 				continue
 			}
 			actions := []string{"UPDATE_PASSWORD"}
-			duration := int((2 * 24 * time.Hour).Seconds())
+			duration := int((7 * 24 * time.Hour).Seconds())
 			params := gocloak.ExecuteActionsEmail{
 				Actions:  &actions,
 				Lifespan: gocloak.IntP(duration),
