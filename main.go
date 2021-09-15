@@ -63,9 +63,11 @@ func main() {
 			actions := []string{"UPDATE_PASSWORD"}
 			duration := int((7 * 24 * time.Hour).Seconds())
 			params := gocloak.ExecuteActionsEmail{
-				Actions:  &actions,
-				Lifespan: gocloak.IntP(duration),
-				UserID:   gocloak.StringP(id),
+				Actions:     &actions,
+				Lifespan:    gocloak.IntP(duration),
+				UserID:      gocloak.StringP(id),
+				RedirectURI: gocloak.StringP(viper.GetString("keycloak.redirect_uri")),
+				ClientID:    gocloak.StringP(viper.GetString("keycloak.client_id")),
 			}
 			err = client.ExecuteActionsEmail(ctx, token.AccessToken, realm, params)
 			if err != nil {

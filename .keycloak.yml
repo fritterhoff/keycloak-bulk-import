@@ -3,6 +3,8 @@ keycloak:
   user:
   password:
   realm:
+  client_id:
+  redirect_uri:
 students:
   - firstname:
     lastname:
