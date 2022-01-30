@@ -5,7 +5,7 @@ go 1.17
 require (
 	github.com/Nerzal/gocloak/v8 v8.6.0
 	github.com/mitchellh/go-homedir v1.1.0
-	github.com/rs/zerolog v1.26.0
+	github.com/rs/zerolog v1.26.1
 	github.com/spf13/viper v1.8.1
 )
 
